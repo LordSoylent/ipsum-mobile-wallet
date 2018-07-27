@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             xmlns:behaviours="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             xmlns:converters="clr-namespace:ipsum_mobile_wallet.Converters"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="ipsum_mobile_wallet.Views.MainPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:SelectedItemEventArgsConverter x:Key="itemTappedEventArgsConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Orientation="Vertical">
+        <ListView ItemsSource="{Binding Accounts}">
+            <ListView.Behaviors>
+                <behaviours:EventToCommandBehavior EventName="ItemTapped" Command="{Binding AccountSelectedCommand}" EventArgsConverterParameter="{StaticResource itemTappedEventArgsConverter}" EventArgsParameterPath="Item" />
+            </ListView.Behaviors>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout VerticalOptions="CenterAndExpand">
+                            <Label Text="{Binding Name}" TextColor="Black" FontSize="10" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <StackLayout IsVisible="{Binding LoginVisible}">
+            <Entry Placeholder="login" Text="{Binding Login}" PlaceholderColor="Black" />
+            <Entry Placeholder="password" Text="{Binding Password}" PlaceholderColor="Black" />
+        </StackLayout>
+        <StackLayout>
+            <Button Text="Register" Command="{Binding RegisterCommand}" IsVisible="{Binding RegisterVisible}" />
+        </StackLayout>
+        <!--<Image x:Name="Logo" Source="IPS.png" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"  />
+            <ActivityIndicator Color="White" IsRunning="true" />
+            <Label Text="Ipsum | Intelligent Payment System kokotis" 
+           HorizontalOptions="Center"
+           VerticalOptions="CenterAndExpand" />-->
+    </StackLayout>
+</ContentPage>
